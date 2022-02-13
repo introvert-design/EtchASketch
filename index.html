@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etch a sketch</title>
+    <link rel="stylesheet" href="style.css">
+    <script type = "text/javascript" src="etch-a-sketch.js" defer></script>
+</head>
+<body>
+    <div class="title"><h1>Etch a Sketch</h1></div>
+    <div class="container">
+        <div class="controls">
+            <button value="color">Color</button>
+            <button value="rainbow">Rainbow</button>
+            <button value="shading">Shading</button>
+            <button value="eraser">Eraser</button>
+            <button value="clear">Clear</button>
+            <div class="slider-container">
+                <label for="my-range">Select a grid pattern</label>
+                <input type="range" min="16" max="80" step="16" class="slider" id="my-range">
+                <p class="slider-value"></p>
+            </div>
+        </div>
+        <div class="sketchpad"></div>
+    </div>
+    
+</body>
+</html>
