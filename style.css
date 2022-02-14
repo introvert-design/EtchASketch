@@ -30,7 +30,7 @@ button {
 .active {
     border-color: darkolivegreen;
     background-color: green;
-    color: white;
+    color: #f1f2f3;
 }
 
 .slider-container {

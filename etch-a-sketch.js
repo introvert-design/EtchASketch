@@ -1,8 +1,8 @@
-const colorBtn = document.querySelector('.color-btn');
 const slider = document.querySelector('.slider');
 const sliderValue = document.querySelector('.slider-value');
 const sketchpad = document.querySelector('.sketchpad');
-const buttons = document.querySelectorAll('button');
+const sketchBtns = document.querySelectorAll('.sketch-btn');
+const clearBtn = document.querySelector('.clear-btn');
 
 function displayGridValue(gridValue) {
     sliderValue.textContent = `${gridValue} x ${gridValue}`;
@@ -40,13 +40,25 @@ function changeGrid(e) {
     configSketchpad(gridValue);    
 }
 
-const initialGridValue = slider.value;
-configSketchpad(initialGridValue);
+let gridValue = slider.value;
+configSketchpad(gridValue);
 
 slider.addEventListener('change', changeGrid);
 
 let isReady = false;
 let selectedOption = 'color';
+
+function eraseGrid(child) {
+    if (child.style.backgroundColor !== '') {
+        child.style.backgroundColor = '';
+        child.style.borderColor = '#E8E9EB';
+    }
+}
+
+function clearGrid(e) {
+    const children = sketchpad.childNodes;
+    children.forEach(child => eraseGrid(child));
+}
 
 function selectOption(e) {
     const previousSelectedbutton = document.querySelector(`button[value="${selectedOption}"]`);
@@ -77,9 +89,11 @@ function getColor() {
 }
 
 function sketch(e) {
-    if (isReady && e.target.className !== 'sketchpad') {
-        e.target.style.backgroundColor = `${getColor()}`;
-        // e.target.style.borderColor = 'rgba(0, 0, 0, 0.3)';
+    if (isReady && 
+        e.target.className !== 'sketchpad') {
+            gridColor = getColor();        
+            e.target.style.backgroundColor = `${gridColor}`;
+            e.target.style.borderColor = `${gridColor}`;
     }    
 }
 
@@ -96,4 +110,5 @@ sketchpad.addEventListener('dragstart', stopSketch);
 sketchpad.addEventListener('mouseup', stopSketch);
 sketchpad.addEventListener('mousedown', startSketch);
 sketchpad.addEventListener('mouseover', sketch);
-buttons.forEach(button => button.addEventListener('click', selectOption));
+sketchBtns.forEach(button => button.addEventListener('click', selectOption));
+clearBtn.addEventListener('click', clearGrid);
