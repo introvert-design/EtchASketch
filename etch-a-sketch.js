@@ -48,14 +48,14 @@ slider.addEventListener('change', changeGrid);
 let isReady = false;
 let selectedOption = 'color';
 
-function eraseGrid(child) {
-    if (child.style.backgroundColor !== '') {
-        child.style.backgroundColor = '';
-        child.style.borderColor = '#E8E9EB';
+function eraseGrid(elt) {
+    if (elt.style.backgroundColor !== '') {
+        elt.style.backgroundColor = '';
+        elt.style.borderColor = '#E8E9EB';
     }
 }
 
-function clearGrid(e) {
+function clearGrid() {
     const children = sketchpad.childNodes;
     children.forEach(child => eraseGrid(child));
 }
@@ -89,11 +89,15 @@ function getColor() {
 }
 
 function sketch(e) {
-    if (isReady && 
-        e.target.className !== 'sketchpad') {
+    if (isReady && e.target.className !== 'sketchpad') {
+        if (selectedOption === 'color' || selectedOption === 'rainbow') {
             gridColor = getColor();        
             e.target.style.backgroundColor = `${gridColor}`;
             e.target.style.borderColor = `${gridColor}`;
+        }
+        else if (selectedOption === 'eraser') {
+            eraseGrid(e.target);
+        }            
     }    
 }
 
