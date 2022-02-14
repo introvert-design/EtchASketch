@@ -27,6 +27,12 @@ button {
     cursor: pointer;
 }
 
+.active {
+    border-color: darkolivegreen;
+    background-color: green;
+    color: white;
+}
+
 .slider-container {
     padding-top: 12px;
     display: flex;
