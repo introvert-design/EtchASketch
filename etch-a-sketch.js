@@ -5,14 +5,31 @@ const sketchBtns = document.querySelectorAll('.sketch-btn');
 const clearBtn = document.querySelector('.clear-btn');
 const colorPicker = document.querySelector('#color-picker');
 
-function displayGridValue(gridValue) {
-    sliderValue.textContent = `${gridValue} x ${gridValue}`;
-}
+let gridValue = slider.value;
+let isReady = false;
+let selectedOption = 'color';
 
 function removeChilds(parent) {
     while (parent.lastChild) {
         parent.removeChild(parent.lastChild);
     }
+}
+
+function removeClass(selector, className) {
+    const elt = document.querySelector(selector);
+    elt.classList.remove(className);
+}
+
+function randomColorCode() {
+    return Math.floor(Math.random() * 256);
+}
+
+function getRandomColor() {
+    let colorCodes = [];
+    for (let i = 0; i < 3; i++) {
+        colorCodes.push(randomColorCode());
+    }
+    return `rgba(${colorCodes.join(',')})`;
 }
 
 function setGridColor(elt, backgroundColor='', borderColor='#E8E9EB', opacity='') {
@@ -29,7 +46,19 @@ function setGridColor(elt, backgroundColor='', borderColor='#E8E9EB', opacity=''
     else {
         elt.style.opacity = opacity;
     } 
+}
 
+function clearGrid() {
+    const children = sketchpad.childNodes;
+    children.forEach(child => {
+        if (child.style.backgroundColor !== '') {
+            setGridColor(child)
+        }
+    });
+}
+
+function displayGridValue(gridValue) {
+    sliderValue.textContent = `${gridValue} x ${gridValue}`;
 }
 
 function drawGridLines(gridValue) {
@@ -58,45 +87,11 @@ function changeGrid(e) {
     configSketchpad(gridValue);    
 }
 
-let gridValue = slider.value;
-configSketchpad(gridValue);
-
-slider.addEventListener('change', changeGrid);
-
-let isReady = false;
-let selectedOption = 'color';
-
-function clearGrid() {
-    const children = sketchpad.childNodes;
-    children.forEach(child => {
-        if (child.style.backgroundColor !== '') {
-            setGridColor(child)
-        }
-    });
-}
-
-function removeClass(selector, className) {
-    const elt = document.querySelector(selector);
-    elt.classList.remove(className);
-}
-
 function selectOption(e) {
     const selector = `button[value="${selectedOption}"]`;
     removeClass(selector, 'active');    
     selectedOption = e.target.value;
     e.target.classList.add('active');
-}
-
-function randomColorCode() {
-    return Math.floor(Math.random() * 256);
-}
-
-function getRandomColor() {
-    let colorCodes = [];
-    for (let i = 0; i < 3; i++) {
-        colorCodes.push(randomColorCode());
-    }
-    return `rgba(${colorCodes.join(',')})`;
 }
 
 function sketch(e) {
@@ -131,6 +126,9 @@ function stopSketch() {
     isReady = false;
 }
 
+configSketchpad(gridValue);
+
+slider.addEventListener('change', changeGrid);
 sketchpad.addEventListener('dragstart', stopSketch);
 sketchpad.addEventListener('mouseup', stopSketch);
 sketchpad.addEventListener('mousedown', startSketch);
