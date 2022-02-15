@@ -23,7 +23,13 @@ body {
     gap: 12px;
 }
 
-button {
+.color-container {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+button, #color-picker {
     cursor: pointer;
 }
 

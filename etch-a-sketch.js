@@ -3,6 +3,7 @@ const sliderValue = document.querySelector('.slider-value');
 const sketchpad = document.querySelector('.sketchpad');
 const sketchBtns = document.querySelectorAll('.sketch-btn');
 const clearBtn = document.querySelector('.clear-btn');
+const colorPicker = document.querySelector('#color-picker');
 
 function displayGridValue(gridValue) {
     sliderValue.textContent = `${gridValue} x ${gridValue}`;
@@ -61,9 +62,14 @@ function clearGrid() {
     children.forEach(child => eraseGrid(child));
 }
 
+function removeClass(selector, className) {
+    const elt = document.querySelector(selector);
+    elt.classList.remove(className);
+}
+
 function selectOption(e) {
-    const previousSelectedbutton = document.querySelector(`button[value="${selectedOption}"]`);
-    previousSelectedbutton.classList.remove('active');
+    const selector = `button[value="${selectedOption}"]`;
+    removeClass(selector, 'active');    
     selectedOption = e.target.value;
     e.target.classList.add('active');
 }
@@ -82,7 +88,7 @@ function getRandomColor() {
 
 function getColor() {
     if (selectedOption === 'color') {
-        return;
+        return colorPicker.value;
     }
     else if (selectedOption === 'rainbow') {
         return getRandomColor();
