@@ -52,6 +52,7 @@ function eraseGrid(elt) {
     if (elt.style.backgroundColor !== '') {
         elt.style.backgroundColor = '';
         elt.style.borderColor = '#E8E9EB';
+        elt.style.removeProperty('opacity');
     }
 }
 
@@ -94,6 +95,12 @@ function sketch(e) {
             gridColor = getColor();        
             e.target.style.backgroundColor = `${gridColor}`;
             e.target.style.borderColor = `${gridColor}`;
+            e.target.style.removeProperty('opacity');
+        }
+        else if (selectedOption === 'shading') {
+            e.target.style.backgroundColor = 'black';
+            let opacity = Number(e.target.style.opacity);
+            e.target.style.opacity = opacity < 1 ? opacity + 0.1 : 1;
         }
         else if (selectedOption === 'eraser') {
             eraseGrid(e.target);
