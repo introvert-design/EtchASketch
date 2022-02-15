@@ -15,6 +15,23 @@ function removeChilds(parent) {
     }
 }
 
+function setGridColor(elt, backgroundColor='', borderColor='#E8E9EB', opacity='') {
+    if (backgroundColor === '') {
+        elt.style.removeProperty('background-color');
+    }
+    else {
+        elt.style.backgroundColor = backgroundColor;
+    }    
+    elt.style.border = `1px solid ${borderColor}`;
+    if (opacity === '') {
+        elt.style.removeProperty('opacity');
+    }
+    else {
+        elt.style.opacity = opacity;
+    } 
+
+}
+
 function drawGridLines(gridValue) {
     sketchpad.setAttribute(
         'style',
@@ -24,7 +41,7 @@ function drawGridLines(gridValue) {
     )
     for (let i = 0; i < gridValue ** 2; i++) {
         const div = document.createElement('div');
-        div.style.border = '1px solid #E8E9EB';
+        setGridColor(div);
         div.classList.add(`grid-${i}`)
         sketchpad.appendChild(div);
     }
@@ -49,17 +66,13 @@ slider.addEventListener('change', changeGrid);
 let isReady = false;
 let selectedOption = 'color';
 
-function eraseGrid(elt) {
-    if (elt.style.backgroundColor !== '') {
-        elt.style.backgroundColor = '';
-        elt.style.borderColor = '#E8E9EB';
-        elt.style.removeProperty('opacity');
-    }
-}
-
 function clearGrid() {
     const children = sketchpad.childNodes;
-    children.forEach(child => eraseGrid(child));
+    children.forEach(child => {
+        if (child.style.backgroundColor !== '') {
+            setGridColor(child)
+        }
+    });
 }
 
 function removeClass(selector, className) {
@@ -86,30 +99,25 @@ function getRandomColor() {
     return `rgba(${colorCodes.join(',')})`;
 }
 
-function getColor() {
-    if (selectedOption === 'color') {
-        return colorPicker.value;
-    }
-    else if (selectedOption === 'rainbow') {
-        return getRandomColor();
-    }
-}
-
 function sketch(e) {
     if (isReady && e.target.className !== 'sketchpad') {
-        if (selectedOption === 'color' || selectedOption === 'rainbow') {
-            gridColor = getColor();        
-            e.target.style.backgroundColor = `${gridColor}`;
-            e.target.style.borderColor = `${gridColor}`;
-            e.target.style.removeProperty('opacity');
+        let color = '';
+        if (selectedOption === 'color') {
+            color = colorPicker.value;
+            setGridColor(e.target, color, color);
+        } 
+        else if (selectedOption === 'rainbow') {
+            color = getRandomColor(); 
+            setGridColor(e.target, color, color);
         }
         else if (selectedOption === 'shading') {
-            e.target.style.backgroundColor = 'black';
+            color = 'black';
             let opacity = Number(e.target.style.opacity);
-            e.target.style.opacity = opacity < 1 ? opacity + 0.1 : 1;
+            opacity = opacity < 1 ? opacity + 0.1 : 1;
+            setGridColor(e.target, color, color, opacity);
         }
         else if (selectedOption === 'eraser') {
-            eraseGrid(e.target);
+            setGridColor(e.target);
         }            
     }    
 }
