@@ -9,3 +9,5 @@ A sketch board with features such as
 * option to chose different grid outlays
 
 This is part of the Odin project tutorial.
+
+[Live site](https://introvert-design.github.io/EtchASketch/)
